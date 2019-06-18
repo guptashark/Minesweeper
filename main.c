@@ -42,7 +42,9 @@ struct board {
 	struct tile **tiles;
 };
 
-void board_init(struct board *bp, int rows, int cols, int mine_factor) {
+void board_init(struct board *bp, int rows, int cols, int num_mines) {
+
+	(void)num_mines;
 
 	bp->rows = rows;
 	bp->cols = cols;
