@@ -3,9 +3,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-
 struct tile {
 
+	bool cleared;
+	
 	bool has_mine;
 	int x;
 	int y;
@@ -14,6 +15,7 @@ struct tile {
 	//struct tile adjacent[8];
 
 	int num_adjacent_mines;
+	struct tile *adjacents[4];
 
 };
 
@@ -24,17 +26,32 @@ tile_ctor(int x, int y, bool has_mine) {
 	ret->x = x;
 	ret->y = y;
 	ret->has_mine = has_mine;
+	ret->cleared = false;
+
+	// This is default initialized to 0
+	ret->num_adjacent_mines = 0;
+	for(int i =0; i < 4; i++) {
+		ret->adjacents[i] = NULL;
+	}
 
 	return ret;
 }
 
 char tile_print(struct tile *tp) {
 
-	if(tp->has_mine) {
-		return 'X';
+	if(tp->cleared) {
+		if(tp->has_mine) {
+			return 'X';
+		} else {
+			if(tp->num_adjacent_mines > 0) {
+				return '0' + tp->num_adjacent_mines;
+			} else {
+				return ' ';
+			}
+		}
 	} else {
-		return 'O';
-	}
+		return '%';
+	}	
 }
 
 struct board {
@@ -97,6 +114,14 @@ void board_print(struct board *bp) {
 			
 }
 
+struct game {
+	// some fail conditions and whatever. 
+	int status; 	// dead, etc. 
+	
+	int turn;
+
+};
+
 int main(void) {
 
 	printf("Welcome to Minesweeper!\n\n");
@@ -105,5 +130,10 @@ int main(void) {
 	board_init(&b, 5, 6, 3);
 
 	board_print(&b);
+
+
+	
+
+
 
 }
