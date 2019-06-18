@@ -60,7 +60,7 @@ void board_print(struct board *bp) {
 
 	for(int i =0; i < bp->rows; i++) {
 		for(int j = 0; j < bp->cols; j++) {
-			printf("%c", bp->tiles[i * bp->cols + j]);
+			printf("%c", tile_print(bp->tiles[i * bp->cols + j]));
 		}
 
 		printf("\n");
