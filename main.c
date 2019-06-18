@@ -54,6 +54,16 @@ char tile_print(struct tile *tp) {
 	}	
 }
 
+int touch_single_tile(struct tile *tp) {
+
+	tp->cleared = true;
+	if(tp->has_mine) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
 struct board {
 	int rows;
 	int cols;
@@ -131,6 +141,11 @@ int main(void) {
 
 	board_print(&b);
 
+	for(int i = 0; i < 10; i++) {
+		touch_single_tile(b.tiles[i]);
+	}
+
+	board_print(&b);
 
 	
 
