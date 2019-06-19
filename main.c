@@ -66,6 +66,22 @@ int touch_single_tile(struct tile *tp) {
 	}
 }
 
+int touch_tile(struct tile *tp) {
+	
+	if(tp->has_mine) {
+		return 1;
+	}
+
+	
+	for(int i = 0; i < tp->num_adjacent; i++) {
+		if(tp->adjacents[i]->has_mine) {
+			tp->num_adjacent_mines++;
+		}
+	}
+	tp->cleared = true;
+	return 0;
+}
+
 int tile_set_adjacent(struct tile *tp, struct tile *adj) {
 	tp->adjacents[tp->num_adjacent] = adj;
 	tp->num_adjacent++;
@@ -163,6 +179,8 @@ void board_init(struct board *bp, int rows, int cols, int num_mines) {
 			bp->tiles[i * bp->cols + j] = tile_ctor(i, j, mine_status);
 		}
 	}
+
+	board_set_tile_adjacents(bp);
 }
 
 void board_print(struct board *bp) {
@@ -213,7 +231,8 @@ int main(void) {
 		scanf("%d", &y);
 
 		printf("You picked: %d, %d\n", x, y);
-		touch_single_tile(b.tiles[x * b.cols + y]);
+		
+		touch_tile(b.tiles[x * b.cols + y]);
 		board_print(&b);
 	}
 
