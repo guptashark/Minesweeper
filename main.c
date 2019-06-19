@@ -12,10 +12,12 @@ struct tile {
 	int y;
 
 	// the adjacent tiles
-	//struct tile adjacent[8];
+	// struct tile adjacent[8];
 
 	int num_adjacent_mines;
-	struct tile *adjacents[4];
+
+	int num_adjacent;
+	struct tile *adjacents[8];
 
 };
 
@@ -30,7 +32,7 @@ tile_ctor(int x, int y, bool has_mine) {
 
 	// This is default initialized to 0
 	ret->num_adjacent_mines = 0;
-	for(int i =0; i < 4; i++) {
+	for(int i =0; i < 8; i++) {
 		ret->adjacents[i] = NULL;
 	}
 
@@ -64,12 +66,63 @@ int touch_single_tile(struct tile *tp) {
 	}
 }
 
+int tile_set_adjacent(struct tile *tp, struct tile *adj) {
+	tp->adjacents[tp->num_adjacent] = adj;
+	tp->num_adjacent++;
+
+	return 0;
+}
+
 struct board {
 	int rows;
 	int cols;
 
 	struct tile **tiles;
 };
+
+
+
+void board_set_tile_adjacents(struct board *bp) {
+	
+	// center tiles - 
+	int r = bp->cols;
+	for(int i = 1; i < (bp->rows - 1); i++) {
+		for(int j = 1; j < (bp->cols - 1); j++) {
+			int k = i * bp->cols + j;
+			tile_set_adjacent(bp->tiles[k], bp->tiles[(i-1) * r + j]);
+			tile_set_adjacent(bp->tiles[k], bp->tiles[(i-1) * r + j + 1]);
+			tile_set_adjacent(bp->tiles[k], bp->tiles[i * r + j + 1]);
+			tile_set_adjacent(bp->tiles[k], bp->tiles[(i+1) * r + j + 1]);
+			tile_set_adjacent(bp->tiles[k], bp->tiles[(i+1) * r + j]);
+			tile_set_adjacent(bp->tiles[k], bp->tiles[(i+1) * r + j - 1]);
+			tile_set_adjacent(bp->tiles[k], bp->tiles[i * r + j - 1]);
+			tile_set_adjacent(bp->tiles[k], bp->tiles[(i+1) * r + j - 1]);
+		}
+	}
+
+	// top edge - excluding corners; 
+	for(int j = 1; j < (bp->cols - 1); j++) {
+		tile_set_adjacent(bp->tiles[j], bp->tiles[j-1]);
+		tile_set_adjacent(bp->tiles[j], bp->tiles[j+1]);
+		tile_set_adjacent(bp->tiles[j], bp->tiles[bp->cols + j - 1]);
+		tile_set_adjacent(bp->tiles[j], bp->tiles[bp->cols + j ]);
+		tile_set_adjacent(bp->tiles[j], bp->tiles[bp->cols + j + 1]);
+	}
+
+	// bottom edge - excluding corners; 
+	int bl = bp->cols * (bp->rows - 1);
+	for(int j = 1; j < (bp->cols - 1); j++) {
+		tile_set_adjacent(bp->tiles[bl + j], bp->tiles[bl + j-1]);
+		tile_set_adjacent(bp->tiles[bl + j], bp->tiles[bl + j+1]);
+		tile_set_adjacent(bp->tiles[bl + j], bp->tiles[bl - r + j - 1]);
+		tile_set_adjacent(bp->tiles[bl + j], bp->tiles[bl - r + j ]);
+		tile_set_adjacent(bp->tiles[bl + j], bp->tiles[bl - r + j + 1]);
+	}
+
+	// This is really annoying
+	
+
+}
 
 
 // Hackyish. Relies on there being not too many mines, otherwise 
@@ -114,18 +167,30 @@ void board_init(struct board *bp, int rows, int cols, int num_mines) {
 
 void board_print(struct board *bp) {
 
+	for(int i = 0; i < (bp->cols + 2); i++) {
+		printf("-");
+	}
+
+	printf("\n");
+
 	for(int i =0; i < bp->rows; i++) {
+		printf("|");
 		for(int j = 0; j < bp->cols; j++) {
 			printf("%c", tile_print(bp->tiles[i * bp->cols + j]));
 		}
 
-		printf("\n");
+		printf("|\n");
 	}
-			
+
+	for(int i = 0; i < (bp->cols + 2); i++) {
+		printf("-");
+	}
+
+	printf("\n");
 }
 
 struct game {
-	// some fail conditions and whatever. 
+	// some fail conditions 
 	int status; 	// dead, etc. 
 	
 	int turn;
@@ -137,18 +202,22 @@ int main(void) {
 	printf("Welcome to Minesweeper!\n\n");
 
 	struct board b;
-	board_init(&b, 5, 6, 3);
+	board_init(&b, 10, 10, 10);
 
 	board_print(&b);
 
-	for(int i = 0; i < 10; i++) {
-		touch_single_tile(b.tiles[i]);
+	while(true) {
+		int x; 
+		int y;
+		scanf("%d", &x);
+		scanf("%d", &y);
+
+		printf("You picked: %d, %d\n", x, y);
+		touch_single_tile(b.tiles[x * b.cols + y]);
+		board_print(&b);
 	}
 
 	board_print(&b);
 
-	
-
-
-
 }
+
