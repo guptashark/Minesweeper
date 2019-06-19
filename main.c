@@ -135,9 +135,25 @@ void board_set_tile_adjacents(struct board *bp) {
 		tile_set_adjacent(bp->tiles[bl + j], bp->tiles[bl - r + j + 1]);
 	}
 
-	// This is really annoying
-	
+	// left edge - excluding corners;
+	for(int i = 1; i < (bp->rows - 1); i++) {
+		tile_set_adjacent(bp->tiles[i * r], bp->tiles[(i - 1) * r]);
+		tile_set_adjacent(bp->tiles[i * r], bp->tiles[(i + 1) * r]);
+		tile_set_adjacent(bp->tiles[i * r], bp->tiles[(i - 1) * r + 1]);
+		tile_set_adjacent(bp->tiles[i * r], bp->tiles[i * r + 1]);
+		tile_set_adjacent(bp->tiles[i * r], bp->tiles[(i + 1) * r + 1]);
+	}
 
+	// right edge - excluding corners;
+
+	int tr = bp->cols - 1;
+	for	(int i = 1; i < (bp->rows - 1); i++) {
+		tile_set_adjacent(bp->tiles[i * r + tr], bp->tiles[(i-1) * r + tr]);
+		tile_set_adjacent(bp->tiles[i * r + tr], bp->tiles[(i+1) * r + tr]);
+		tile_set_adjacent(bp->tiles[i * r + tr], bp->tiles[i * r + tr -1]);
+		tile_set_adjacent(bp->tiles[i * r + tr], bp->tiles[(i-1) * r + tr - 1]);
+		tile_set_adjacent(bp->tiles[i * r + tr], bp->tiles[(i+1) * r + tr - 1]);
+	}
 }
 
 
