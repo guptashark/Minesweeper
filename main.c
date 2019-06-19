@@ -67,18 +67,26 @@ int touch_single_tile(struct tile *tp) {
 }
 
 int touch_tile(struct tile *tp) {
+	if(tp == NULL) {
+		return 0;
+	}
 	
 	if(tp->has_mine) {
 		return 1;
 	}
-
 	
 	for(int i = 0; i < tp->num_adjacent; i++) {
 		if(tp->adjacents[i]->has_mine) {
 			tp->num_adjacent_mines++;
 		}
 	}
+
 	tp->cleared = true;
+	if(tp->num_adjacent_mines == 0) {
+		for(int i = 0; i < tp->num_adjacent; i++) {
+			touch_tile(tp->adjacents[i]);
+		}
+	}
 	return 0;
 }
 
