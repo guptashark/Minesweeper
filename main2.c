@@ -5,12 +5,21 @@
 
 #include "game.h"
 
-int main(void) {
+int main(int argc, char *argv[]) {
 
 	struct game g;
 	struct game *gp = &g;
 
-	game_init(gp, stdin);
+	// this implies there is a file to read from. 
+
+	FILE *input = NULL;
+	if(argc == 2) {
+		input = fopen(argv[1], "r");
+	} else {
+		input = stdin;
+	}
+
+	game_init(gp, input);
 	game_dbstart(gp);
 
 	return 0;

@@ -60,7 +60,7 @@ board_init_from_file(struct board *b, int rows, int cols, FILE *spec) {
 int 
 board_dbprint(struct board *b) {
 
-	for(int i = 0; i < b->rows + 2; i++) {
+	for(int i = 0; i < b->cols + 2; i++) {
 		printf("-");		
 	}	
 	printf("\n");
@@ -73,7 +73,7 @@ board_dbprint(struct board *b) {
 		printf("|\n");
 	}
 	
-	for(int i = 0; i < b->rows + 2; i++) {
+	for(int i = 0; i < b->cols + 2; i++) {
 		printf("-");
 	}
 
