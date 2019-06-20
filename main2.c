@@ -10,7 +10,7 @@ int main(void) {
 	struct game g;
 	struct game *gp = &g;
 
-	game_init(gp);
+	game_init(gp, stdin);
 	game_dbstart(gp);
 
 	return 0;
