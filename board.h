@@ -35,3 +35,6 @@ board_get_num_adjacent_mines(struct board * b, int x, int y);
 
 int
 board_touch_tile(struct board *b, int x, int y);
+
+int
+board_touch_adjacent_tiles(struct board *b, int x, int y);

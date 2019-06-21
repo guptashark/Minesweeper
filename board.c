@@ -122,6 +122,21 @@ board_touch_tile(struct board *b, int x, int y) {
 	return 0;
 }
 
+int
+board_touch_adjacent_tiles(struct board *b, int x, int y) {
+
+	board_touch_tile(b, x-1, y);
+	board_touch_tile(b, x+1, y);
+	board_touch_tile(b, x-1, y-1);
+	board_touch_tile(b, x, y-1);
+	board_touch_tile(b, x+1, y-1);
+	board_touch_tile(b, x-1, y+1);
+	board_touch_tile(b, x, y+1);
+	board_touch_tile(b, x+1, y+1);
+
+	return 0;
+}
+
 static
 int 
 board_query_tile(struct board *b, int x, int y) {
@@ -145,14 +160,14 @@ board_get_num_adjacent_mines(struct board *b, int x, int y) {
 
 	int ta = 0; // total adjacent
 
-	ta += board_query_tile(b, y-1,x-1);
-	ta += board_query_tile(b, y-1,x);
-	ta += board_query_tile(b, y-1,x+1);
-	ta += board_query_tile(b, y,x-1);
-	ta += board_query_tile(b, y,x+1);
-	ta += board_query_tile(b, y+1,x-1);
-	ta += board_query_tile(b, y+1,x);
-	ta += board_query_tile(b, y+1,x+1);
+	ta += board_query_tile(b, x-1, y-1);
+	ta += board_query_tile(b, x, y-1);
+	ta += board_query_tile(b, x+1, y-1);
+	ta += board_query_tile(b, x-1, y);
+	ta += board_query_tile(b, x+1, y);
+	ta += board_query_tile(b, x-1, y+1);
+	ta += board_query_tile(b, x, y+1);
+	ta += board_query_tile(b, x+1, y+1);
 
 	return ta;
 

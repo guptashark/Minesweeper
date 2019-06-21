@@ -57,6 +57,10 @@ touch_tile(struct tile *t) {
 	// to display
 	int ret = board_get_num_adjacent_mines(t->b, t->x, t->y);
 	t->num_adjacent_mines = ret;
+
+	if(t->num_adjacent_mines == 0) {
+		board_touch_adjacent_tiles(t->b, t->x, t->y);
+	}
 	return 0;
 
 }

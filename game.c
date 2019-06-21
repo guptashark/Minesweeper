@@ -35,17 +35,10 @@ game_dbstart(struct game *g) {
 	return 0;
 }
 
-/*
-static 
-int 
-game_print(struct game *g) {
-	board_print(g->bp);	
-	return 0;
-}
-*/
-
 int 
 game_turn(struct game *g) {
+
+	board_dbprint(g->bp);
 	int x = 0;
 	int y = 0;
 	scanf("%d", &x);
