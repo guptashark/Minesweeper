@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -25,3 +26,12 @@ board_init_from_file(struct board *b, int rows, int cols, FILE *spec);
 
 int 
 board_dbprint(struct board *b);
+
+int
+board_print(struct board *b);
+
+int 
+board_get_num_adjacent_mines(struct board * b, int x, int y);
+
+int
+board_touch_tile(struct board *b, int x, int y);

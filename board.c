@@ -82,4 +82,78 @@ board_dbprint(struct board *b) {
 	return 0;
 }
 
+int 
+board_print(struct board *b) {
 
+	for(int i = 0; i < b->cols + 2; i++) {
+		printf("-");		
+	}	
+	printf("\n");
+
+	for(int i = 0; i < b->rows; i++) {
+		printf("|");
+		for(int j = 0; j < b->cols; j++) {
+			printf("%c", tile_print(b->tiles[i][j]));
+		}
+		printf("|\n");
+	}
+	
+	for(int i = 0; i < b->cols + 2; i++) {
+		printf("-");
+	}
+
+	printf("\n");
+
+	return 0;
+}
+
+int
+board_touch_tile(struct board *b, int x, int y) {
+
+	if(x < 0 || x >= b->cols) {
+		return 1;
+	}
+
+	if(y < 0 || y >= b->rows) {
+		return 1;
+	}
+
+	touch_tile(b->tiles[y][x]);
+	return 0;
+}
+
+static
+int 
+board_query_tile(struct board *b, int x, int y) {
+	if(x < 0 || x >= b->cols) {
+		return 0;
+	} 
+
+	if(y < 0 || y >= b->rows) {
+		return 0;
+	}
+
+	if(b->tiles[y][x]->has_mine) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+int 
+board_get_num_adjacent_mines(struct board *b, int x, int y) {
+
+	int ta = 0; // total adjacent
+
+	ta += board_query_tile(b, y-1,x-1);
+	ta += board_query_tile(b, y-1,x);
+	ta += board_query_tile(b, y-1,x+1);
+	ta += board_query_tile(b, y,x-1);
+	ta += board_query_tile(b, y,x+1);
+	ta += board_query_tile(b, y+1,x-1);
+	ta += board_query_tile(b, y+1,x);
+	ta += board_query_tile(b, y+1,x+1);
+
+	return ta;
+
+}

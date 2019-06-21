@@ -35,9 +35,26 @@ game_dbstart(struct game *g) {
 	return 0;
 }
 
+/*
+static 
+int 
+game_print(struct game *g) {
+	board_print(g->bp);	
+	return 0;
+}
+*/
+
 int 
 game_turn(struct game *g) {
-	(void)g;
+	int x = 0;
+	int y = 0;
+	scanf("%d", &x);
+	scanf("%d", &y);
+
+	board_touch_tile(g->bp, x, y);
+	board_print(g->bp);
+
+	
+
 	return 0;	
 }
-

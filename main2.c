@@ -21,6 +21,9 @@ int main(int argc, char *argv[]) {
 
 	game_init(gp, input);
 	game_dbstart(gp);
+	while(true) {
+		game_turn(gp);
+	}
 
 	return 0;
 }

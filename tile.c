@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "tile.h"
+#include "board.h"
 
 struct tile *
 tile_ctor(struct board *b, int x, int y, bool has_mine) {
@@ -10,7 +11,9 @@ tile_ctor(struct board *b, int x, int y, bool has_mine) {
 	t->b = b;
 	t->has_mine = has_mine;
 
-	t->status = 0;
+	t->status = HIDDEN;
+	t->num_adjacent_mines = 0;
+
 	return t;
 }
 
@@ -21,4 +24,39 @@ tile_dbprint(struct tile *tp) {
 	} else {
 		return 'O';
 	}
+}
+
+char 
+tile_print(struct tile *tp) {
+	if(tp->status == HIDDEN) {
+		return '.';
+	} 
+
+	if(tp->num_adjacent_mines == 0) {
+		return ' ';
+	} else {
+		return tp->num_adjacent_mines + '0';
+	}	
+}
+
+int
+touch_tile(struct tile *t) {
+	// No point in touching a tile already opened. 
+	if(t->status == OPENED) {
+		return -1;
+	} 
+
+	t->status = OPENED;
+
+	if(t->has_mine) {
+		return 1;
+	}
+
+	// unopened and has no mine. 
+	// so now, check nearby tiles to see what 
+	// to display
+	int ret = board_get_num_adjacent_mines(t->b, t->x, t->y);
+	t->num_adjacent_mines = ret;
+	return 0;
+
 }
