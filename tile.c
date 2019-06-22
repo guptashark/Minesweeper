@@ -32,6 +32,10 @@ tile_print(struct tile *tp) {
 		return '.';
 	} 
 
+	if(tp->has_mine) {
+		return '*';
+	}
+
 	if(tp->num_adjacent_mines == 0) {
 		return ' ';
 	} else {
