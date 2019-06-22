@@ -12,7 +12,7 @@ board_init(struct board *b, int rows, int cols, int num_mines) {
 	b->cols = cols;
 	
 	b->tiles = malloc(sizeof(struct tile **) * rows);
-	for(int i = 0; i < cols; i++) {
+	for(int i = 0; i < rows; i++) {
 		b->tiles[i] = malloc(sizeof(struct tile *) * cols);
 	}
 
@@ -31,7 +31,7 @@ board_init(struct board *b, int rows, int cols, int num_mines) {
 
 	for(int i = 0; i < rows; i++) {
 		for(int j = 0; j < cols; j++) {
-			b->tiles[i][j] = tile_ctor(b, i, j, mine_spots[i * cols + j]);
+			b->tiles[j][i] = tile_ctor(b, i, j, mine_spots[i * cols + j]);
 		}
 	}
 	return 0;
@@ -168,6 +168,7 @@ board_get_num_adjacent_mines(struct board *b, int x, int y) {
 	ta += board_query_tile(b, x-1, y+1);
 	ta += board_query_tile(b, x, y+1);
 	ta += board_query_tile(b, x+1, y+1);
+
 
 	return ta;
 
