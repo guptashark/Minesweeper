@@ -118,8 +118,13 @@ board_touch_tile(struct board *b, int x, int y) {
 		return 1;
 	}
 
-	touch_tile(b->tiles[y][x]);
-	return 0;
+	int ret = touch_tile(b->tiles[y][x]);
+	// Rn, don't care about the -1
+	if(ret == 1) {
+		return 1;
+	} else {
+		return 0;
+	}
 }
 
 int

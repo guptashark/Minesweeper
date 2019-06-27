@@ -21,7 +21,10 @@ int main(int argc, char *argv[]) {
 
 	game_init(gp, input);
 	while(true) {
-		game_turn(gp);
+		int ret = game_turn(gp);
+		if(ret == 1) {
+			printf("You touched a mine! Game over!\n");
+		}
 	}
 
 	return 0;

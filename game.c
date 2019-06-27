@@ -44,10 +44,12 @@ game_turn(struct game *g) {
 	scanf("%d", &x);
 	scanf("%d", &y);
 
-	board_touch_tile(g->bp, x, y);
+	int ret = board_touch_tile(g->bp, x, y);
+	if(ret == 1) {
+		// we touched a mine! 
+		return 1;
+	}
 	board_print(g->bp);
-
-	
 
 	return 0;	
 }
