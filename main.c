@@ -24,6 +24,7 @@ int main(int argc, char *argv[]) {
 		int ret = game_turn(gp);
 		if(ret == 1) {
 			printf("You touched a mine! Game over!\n");
+			return 0;
 		}
 	}
 

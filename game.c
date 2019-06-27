@@ -38,18 +38,19 @@ game_dbstart(struct game *g) {
 int 
 game_turn(struct game *g) {
 
-	board_dbprint(g->bp);
+	//board_dbprint(g->bp);
 	int x = 0;
 	int y = 0;
 	scanf("%d", &x);
 	scanf("%d", &y);
 
 	int ret = board_touch_tile(g->bp, x, y);
-	if(ret == 1) {
-		// we touched a mine! 
-		return 1;
-	}
 	board_print(g->bp);
-
-	return 0;	
+	
+	// touched a mine
+	if(ret == 1) {
+		return 1;
+	} else {
+		return 0;	
+	}
 }
