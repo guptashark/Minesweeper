@@ -11,6 +11,7 @@ struct board {
 	struct tile ***tiles;
 
 	int num_mines;
+	int cleared_tiles;
 };
 
 /* Not entirely robust, in the case of bad num_mines */

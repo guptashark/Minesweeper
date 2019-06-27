@@ -25,6 +25,9 @@ int main(int argc, char *argv[]) {
 		if(ret == 1) {
 			printf("You touched a mine! Game over!\n");
 			return 0;
+		} else if(ret == 2) {
+			printf("You cleard all the mines! You win!\n");
+			return 0;
 		}
 	}
 

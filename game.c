@@ -38,7 +38,7 @@ game_dbstart(struct game *g) {
 int 
 game_turn(struct game *g) {
 
-	//board_dbprint(g->bp);
+	board_dbprint(g->bp);
 	int x = 0;
 	int y = 0;
 	scanf("%d", &x);
@@ -50,7 +50,9 @@ game_turn(struct game *g) {
 	// touched a mine
 	if(ret == 1) {
 		return 1;
+	} else if(ret == 2) {
+		return 2;	
 	} else {
-		return 0;	
+		return 0;
 	}
 }

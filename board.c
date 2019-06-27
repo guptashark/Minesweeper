@@ -10,6 +10,8 @@ int
 board_init(struct board *b, int rows, int cols, int num_mines) {
 	b->rows = rows;
 	b->cols = cols;
+	b->num_mines = num_mines;
+	b->cleared_tiles = 0;
 	
 	b->tiles = malloc(sizeof(struct tile **) * rows);
 	for(int i = 0; i < rows; i++) {
@@ -21,7 +23,7 @@ board_init(struct board *b, int rows, int cols, int num_mines) {
 	bool *mine_spots = malloc(sizeof(bool) * rows * cols);
 	for(int i = 0; i < (rows * cols); i++) mine_spots[i] = false;
 
-	while(num_set_mines < num_mines) {
+	while(num_set_mines < b->num_mines) {
 		int spot = rand() % (rows * cols);
 		if(mine_spots[spot] == false) {
 			mine_spots[spot] = true;
@@ -34,6 +36,7 @@ board_init(struct board *b, int rows, int cols, int num_mines) {
 			b->tiles[j][i] = tile_ctor(b, i, j, mine_spots[i * cols + j]);
 		}
 	}
+
 	return 0;
 }
 
@@ -111,20 +114,27 @@ int
 board_touch_tile(struct board *b, int x, int y) {
 
 	if(x < 0 || x >= b->cols) {
-		return 1;
+		return -1;
 	}
 
 	if(y < 0 || y >= b->rows) {
-		return 1;
+		return -1;
 	}
 
 	int ret = touch_tile(b->tiles[y][x]);
-	// Rn, don't care about the -1
-	if(ret == 1) {
-		return 1;
-	} else {
-		return 0;
+
+	if(ret == 0) {
+		b->cleared_tiles++;
 	}
+	// Touched a mine, don't care about the -1
+	if(ret == 1) return 1; 
+
+	// win condition
+	if(b->cleared_tiles == (b->rows * b->cols - b->num_mines)) {
+		return 2;
+	}
+
+	return 0;
 }
 
 int
