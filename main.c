@@ -1,6 +1,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <curses.h>
 #include <stdbool.h>
 
 #include "game.h"
@@ -9,16 +10,27 @@ int main(int argc, char *argv[]) {
 
 	struct game g;
 	struct game *gp = &g;
-
+	(void)g;
+	(void)gp;
 	// this implies there is a file to read from. 
 
 	FILE *input = NULL;
+	(void)input;
 	if(argc == 2) {
 		input = fopen(argv[1], "r");
 	} else {
 		input = stdin;
 	}
 
+	// initialize ncurses
+	initscr();
+	mvaddch(0, 0, 'h');
+	mvaddch(0, 1, 'b');
+	mvaddch(1, 0, 'c');
+	getch();
+	endwin();		
+	printf("\n\n\n");
+/*	
 	game_init(gp, input);
 	while(true) {
 		int ret = game_turn(gp);
@@ -30,6 +42,6 @@ int main(int argc, char *argv[]) {
 			return 0;
 		}
 	}
-
+*/
 	return 0;
 }
