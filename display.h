@@ -1,7 +1,11 @@
+
 #include <stdio.h>
 
 struct display {
 	
+
+	int rows;
+	int cols;
 	FILE *output; 
 	// sockets? 	
 
@@ -10,3 +14,8 @@ struct display {
 		
 
 };
+
+int display_init(struct display *d, int rows, int cols, FILE *output);
+
+int display_print(struct display *d);
+

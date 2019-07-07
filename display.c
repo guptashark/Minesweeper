@@ -1,5 +1,6 @@
-#include "display.h"
+#include <stdlib.h>
 
+#include "display.h"
 
 int display_init(struct display *d, int rows, int cols, FILE *output) {
 
@@ -15,10 +16,32 @@ int display_init(struct display *d, int rows, int cols, FILE *output) {
 			d->tiles[i * d->cols + j] = '\0';
 		}
 	}
-}
 
-int display_print(struct display *d) {
-	(void)d;
 	return 0;
 }
 
+int display_print(struct display *d) {
+
+	for(int i = 0; i < d->cols + 2; i++) {
+		printf("-");		
+	}	
+	printf("\n");
+
+	for(int i = 0; i < d->rows; i++) {
+		printf("|");
+		for(int j = 0; j < d->cols; j++) {
+//			printf("%c", tile_print(b->tiles[i][j]));
+// TODO The right printing action
+			printf("X");
+		}
+		printf("|\n");
+	}
+	
+	for(int i = 0; i < d->cols + 2; i++) {
+		printf("-");
+	}
+
+	printf("\n");
+
+	return 0;
+}

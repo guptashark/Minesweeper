@@ -28,7 +28,12 @@ int main(int argc, char *argv[]) {
 	endwin();		
 	printf("\n\n\n");
 */	
+	
+	struct display d;
+	display_init(&d, 5, 5, NULL);
+
 	game_init(gp, input);
+	board_set_display(gp->bp, &d);
 	while(true) {
 		int ret = game_turn(gp);
 		if(ret == 1) {
