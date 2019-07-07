@@ -12,6 +12,7 @@ board_init(struct board *b, int rows, int cols, int num_mines) {
 	b->cols = cols;
 	b->num_mines = num_mines;
 	b->cleared_tiles = 0;
+	b->dsp = NULL;
 	
 	b->tiles = malloc(sizeof(struct tile **) * rows);
 	for(int i = 0; i < rows; i++) {
@@ -51,6 +52,13 @@ board_init_specified_state
 	return 0;
 }
 
+int
+board_set_display
+(struct board *b, struct display *dsp) {
+	b->dsp = dsp;
+	return 0;
+}
+
 int 
 board_init_from_file(struct board *b, int rows, int cols, FILE *spec) {
 	(void)b;
@@ -87,6 +95,8 @@ board_dbprint(struct board *b) {
 
 int 
 board_print(struct board *b) {
+
+	display_print(b->dsp);
 
 	for(int i = 0; i < b->cols + 2; i++) {
 		printf("-");		

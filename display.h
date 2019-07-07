@@ -5,7 +5,7 @@ struct display {
 	FILE *output; 
 	// sockets? 	
 
-	char **tiles;
+	char *tiles;
 	
 		
 
